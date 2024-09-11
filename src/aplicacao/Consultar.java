@@ -41,7 +41,7 @@ public class Consultar {
             System.out.println("Consultando Reunioes da Pessoa...\n");
 
             System.out.println("Reuniões com a pessoa de nome Lavinia:");
-            List<Reuniao> reunioes1 = Fachada.reuniaosComPessoa("Lavinia");
+            List<Reuniao> reunioes1 = Fachada.reunioesComPessoa("Lavinia");
             if (!reunioes1.isEmpty()){
                 for (Reuniao r : reunioes1) {
                     System.out.println(r);

@@ -3,21 +3,42 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
 	
-	
 	<persistence-unit name="hibernate-postgresql">
-		<description>usa provedor Hibernate com postgresql</description>
+		<description>usa provedor Hibernate</description>
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-	 	<exclude-unlisted-classes>false</exclude-unlisted-classes>
-		<shared-cache-mode>NONE</shared-cache-mode>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<shared-cache-mode>NONE</shared-cache-mode>	
 		<properties>
 			<property name="jakarta.persistence.jdbc.driver" 	value="org.postgresql.Driver" />
-			<property name="jakarta.persistence.jdbc.url"		value="jdbc:postgresql://localhost:5432/agendadereuniao" />
-			<property name="jakarta.persistence.jdbc.user"		value="raft" />
-			<property name="jakarta.persistence.jdbc.password"	value="bd2" />
+			<property name="jakarta.persistence.jdbc.url"		value="jdbc:postgresql://localhost:5432/xxx" />
+			<property name="jakarta.persistence.jdbc.user"		value="xxx" ></property>
+			<property name="jakarta.persistence.jdbc.password"	value="xxx" />
+   			<property name="hibernate.hbm2ddl.auto" 	value="update" />  
+   			<property name="hibernate.generate_statistics" 	value="false" />  
+   			<property name="hibernate.format_sql" 		value="false" />
+   			<property name="hibernate.show_sql" 		value="false" /> 
+			<property name="hibernate.use_sql_comments" value="false" /> 
 			
-   			<property name="hibernate.hbm2ddl.auto" 		value="update" />  
-   			<property name="hibernate.format_sql" 			value="false" />
-   			<property name="hibernate.show_sql" 			value="false" /> 
+			<!-- alternativa ao join fetch: acesso a colecoes nao inicializadas -->
+			<!-- <property name="hibernate.enable_lazy_load_no_trans" value="true"/> -->
 		</properties>
 	</persistence-unit>
+	
+	<persistence-unit name="hibernate-mysql">
+		<description>usa provedor Hibernate com mysql</description>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="jakarta.persistence.jdbc.driver"	value="com.mysql.cj.jdbc.Driver" />
+		    <property name="jakarta.persistence.jdbc.url"  		value="jdbc:mysql://localhost:3306/banco" />
+			<property name="jakarta.persistence.jdbc.user" 		value="root" />
+			<property name="jakarta.persistence.jdbc.password" 	value="" />
+   			<property name="hibernate.hbm2ddl.auto" 	value="update" />  
+   			<property name="hibernate.generate_statistics" 	value="false" />  
+   			<property name="hibernate.format_sql" 		value="false" />
+   			<property name="hibernate.show_sql" 		value="false" /> 
+		</properties>
+	</persistence-unit>
+	
 </persistence>

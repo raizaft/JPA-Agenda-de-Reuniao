@@ -6,72 +6,67 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.TypedQuery;
 import modelo.Pessoa;
 import modelo.Reuniao;
-import aplicacao.Util;
+import daojpa.DAO;
+import daojpa.DAOPessoa;
+import daojpa.DAOReuniao;
 
 
 public class Fachada {
-	private static EntityManager manager;
-	
-	static {
-        manager = Util.conectarBanco();
-    }
-	
-	public static void inicializar() {
-    }
+	private Fachada() {}
 
-    public static void finalizar() {
-        Util.fecharBanco();
-    }
+	private static DAOPessoa daopessoa = new DAOPessoa();
+	private static DAOReuniao daoreuniao = new DAOReuniao();
+
+	public static void inicializar() {
+		DAO.open();
+	}
+
+	public static void finalizar() {
+		DAO.close();
+	}
     
     public static Pessoa buscarPessoa(String nome) {
-    	TypedQuery<Pessoa> q = manager.createQuery("SELECT p FROM Pessoa p WHERE p.nome = :nome", Pessoa.class);
-        q.setParameter("nome", nome);
-        return q.getResultStream().findFirst().orElse(null);
-    }    
+    	Pessoa p = daopessoa.read(nome);
+		return p;
+    }
     
     public static Reuniao buscarReuniao(int id) {
-    	TypedQuery<Reuniao> q = manager.createQuery("SELECT r FROM Reuniao r WHERE r.assunto = :id", Reuniao.class);
-        q.setParameter("id", id);
-        return q.getSingleResult();
+    	Reuniao r = daoreuniao.read(id);
+		return r;
     }    
 
     public static Pessoa criarPessoa(String nome)throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    	DAO.begin();
         
         try {
         	if (buscarPessoa(nome) != null) {
+        		DAO.rollback();
                 throw new Exception("Pessoa já cadastrada!");
         	}
             Pessoa pessoa = new Pessoa(nome);
-            manager.persist(pessoa);
-            transaction.commit();
+            daopessoa.create(pessoa);
+    		DAO.commit();
             return pessoa;
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
     }
 
-    public static void criarReuniao(String data, String assunto, ArrayList<String> nomesPessoas) throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    public static Reuniao criarReuniao(String data, String assunto, ArrayList<String> nomesPessoas) throws Exception {
+    	DAO.begin();
 
         try {
             LocalDate dt = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             LocalDate hoje = LocalDate.now();
             if (dt.isBefore(hoje)) {
+            	DAO.rollback();
                 throw new Exception("A data não pode ser anterior a de hoje.");
             }
 
             if (nomesPessoas.size() < 2) {
+            	DAO.rollback();
                 throw new Exception("Uma reunião deve ter no mínimo 2 pessoas.");
             }
 
@@ -86,34 +81,29 @@ public class Fachada {
 
                 for (Reuniao r : p.getReuniao()) {
                     if (r.getData().equals(data)) {
+                    	DAO.rollback();
                         throw new Exception("A pessoa " + p.getNome() + " já está participando de outra reunião ao mesmo tempo.");
                     }
                 }
                 reuniao.addPessoa(p);
             }
-            manager.persist(reuniao);
+            daoreuniao.create(reuniao);
             
             for (Pessoa pessoa : reuniao.getPessoas()) {
                 pessoa.adicionar(reuniao);
-                manager.merge(pessoa);
+                daopessoa.update(pessoa);
             }
-            transaction.commit();
+            DAO.commit();
+            return reuniao;
         } catch (DateTimeParseException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new Exception("Formato de data inválido: " + data);
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
     }
     
     public static void addPessoaReuniao(String nome, Reuniao reuniao) throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    	DAO.begin();
         
         try {
         	Pessoa p = buscarPessoa(nome);
@@ -121,20 +111,17 @@ public class Fachada {
         		p = criarPessoa(nome);
         	}
         	reuniao.addPessoa(p);
+        	daoreuniao.update(reuniao);
     		p.adicionar(reuniao);
-    		manager.merge(p);
-    		transaction.commit();
+    		daopessoa.update(p);
+    		DAO.commit();
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
     }
 
     public static void alterarAssuntoReuniao(int id, String novoAssunto) throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    	DAO.begin();
     	
         try {
         	Reuniao reuniao = buscarReuniao(id);
@@ -142,113 +129,97 @@ public class Fachada {
                 throw new Exception("Reunião não encontrada.");
             }
             reuniao.setAssunto(novoAssunto);
-            manager.merge(reuniao);
-            transaction.commit();
+            daoreuniao.update(reuniao);
+            DAO.commit();
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
 
     }
 
     public static void alterarNomePessoa(String nome, String novoNome) throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    	DAO.begin();
         
         try {
         	Pessoa pessoa = buscarPessoa(nome);
             if (pessoa == null) {
+            	DAO.rollback();
                 throw new Exception("Pessoa não encontrada");
             }
             pessoa.setNome(novoNome);
-            manager.merge(pessoa);
-            transaction.commit();
+            daopessoa.update(pessoa);
+            DAO.commit();
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
 
     }
     public static void deletarReuniao(int id) throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    	DAO.begin();
 
         try {
         	Reuniao reuniao = buscarReuniao(id);
             if (reuniao == null) {
+            	DAO.rollback();
                 throw new Exception("Reunião não encontrada.");
             }
             for (Pessoa pessoa : reuniao.getPessoas()) {
                 pessoa.remover(reuniao);
-                manager.merge(pessoa);
+                daopessoa.update(pessoa);
             }
 
-            manager.merge(reuniao);
-            transaction.commit();
+            daoreuniao.update(reuniao);
+            DAO.commit();
 
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
     }
     
     public static void deletarPessoa(String nome) throws Exception {
-    	EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
+    	DAO.begin();
         
         try {
             Pessoa pessoa = buscarPessoa(nome);
             if (pessoa == null ) {
+            	DAO.rollback();
                 throw new Exception("Pessoa não encontrada");
             }
             if (!pessoa.getReuniao().isEmpty()) {
+            	DAO.rollback();
                 throw new Exception("Não é possível deletar a pessoa, pois ela está participando de uma ou mais reuniões.");
             }
 
-            manager.merge(pessoa);
-            transaction.commit();
+            daopessoa.update(pessoa);
+            DAO.commit();
         } catch (Exception e) {
-        	if (transaction.isActive()) {
-                transaction.rollback();
-            }
             throw e;
         }
 
     }
 
         public static List<Pessoa> listarPessoas () {
-        	TypedQuery<Pessoa> q = manager.createQuery("SELECT p FROM Pessoa p", Pessoa.class);
-            return q.getResultList();
+        	return daopessoa.readAll();
         }
       
 
         public static List<Reuniao> listarReunioes () {
-        	TypedQuery<Reuniao> q = manager.createQuery("SELECT r FROM Reuniao r", Reuniao.class);
-            return q.getResultList();
+        	return daoreuniao.readAll();
         }
 
-        public static List<Reuniao> consultarReunioes (String data){
-        	LocalDate date = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            TypedQuery<Reuniao> q = manager.createQuery("SELECT r FROM Reuniao r WHERE r.data = :data", Reuniao.class);
-            q.setParameter("data", date);
-            return q.getResultList();
+        public static List<Reuniao> consultarReunioes (String d){
+    		List<Reuniao> result = daoreuniao.readByDate(d);
+    		return result;
         }
         
-        public static List<Reuniao> reuniaosComPessoa (String nome){
-        	TypedQuery<Reuniao> q = manager.createQuery("SELECT r FROM Reuniao r JOIN r.pessoas p WHERE p.nome = :nome", Reuniao.class);
-            q.setParameter("nome", nome);
-            return q.getResultList();
+        public static List<Reuniao> reunioesComPessoa (String nome){
+    		List<Reuniao> result = daoreuniao.readByName(nome);
+    		return result;
         }
+        
         public static List<Pessoa> pessoasComMaisDeNReunioes (int n){
-        	TypedQuery<Pessoa> query = manager.createQuery("SELECT p FROM Pessoa p WHERE SIZE(p.reunioes) > :n", Pessoa.class);
-            query.setParameter("n", n);
-            return query.getResultList();
+    		List<Pessoa> result = daopessoa.readByNReunioes(n);
+    		return result;
         }
     }
 
