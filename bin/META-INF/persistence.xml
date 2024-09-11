@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+	
+	<persistence-unit name="eclipselink">
+		<description>usa provedor Eclipselink com postgresql</description>
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+	<!-- 	<exclude-unlisted-classes>false</exclude-unlisted-classes> -->
+		<class>modelo.Pessoa</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="jakarta.persistence.jdbc.driver" 	value="org.postgresql.Driver" />
+			<property name="jakarta.persistence.jdbc.url"		value="jdbc:postgresql://localhost:5432/agenda" />
+			<property name="jakarta.persistence.jdbc.user"		value="postgres" />
+			<property name="jakarta.persistence.jdbc.password"	value="ifpb" />
+			<property name="jakarta.persistence.schema-generation.database.action"	value="create" />
+			<property name="jakarta.persistence.schema-generation.scripts.action"	value="create" />
+			<property name="jakarta.persistence.schema-generation.scripts.create-target"	value="ddl.txt" />
+			
+			<property name="eclipselink.logging.level" value="fine" />
+			<property name="eclipselink.logging.file" value="eclipselink.log" />
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="hibernate">
+		<description>usa provedor Hibernate com postgresql</description>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	<!-- 	<exclude-unlisted-classes>false</exclude-unlisted-classes> -->
+		<class>modelo.Pessoa</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="jakarta.persistence.jdbc.driver" 	value="org.postgresql.Driver" />
+			<property name="jakarta.persistence.jdbc.url"		value="jdbc:postgresql://localhost:5432/agenda" />
+			<property name="jakarta.persistence.jdbc.user"		value="postgres" />
+			<property name="jakarta.persistence.jdbc.password"	value="ifpb" />
+						
+			<property name="hibernate.dialect"   		value="org.hibernate.dialect.PostgreSQLDialect" />
+   			<property name="hibernate.hbm2ddl.auto" 		value="update" />  
+   			<property name="hibernate.generate_statistics" 	value="false" />  
+   			<property name="hibernate.format_sql" 			value="true" />
+   			<property name="hibernate.show_sql" 			value="true" /> 
+			<property name="hibernate.use_sql_comments" 	value="false" /> 
+		</properties>
+	</persistence-unit>
+	
+</persistence>

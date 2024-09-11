@@ -1,0 +1,38 @@
+21:21:10,179 DEBUG logging:38 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+21:21:10,299  INFO LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: hibernate-postgresql]
+21:21:10,349  INFO Version:44 - HHH000412: Hibernate ORM core version 6.5.2.Final
+21:21:10,386 DEBUG RegionFactoryInitiator:122 - Cannot default RegionFactory based on registered strategies as `[]` RegionFactory strategies were registered
+21:21:10,387  INFO RegionFactoryInitiator:50 - HHH000026: Second-level cache disabled
+21:21:10,623  WARN pooling:81 - HHH10001002: Using built-in connection pool (not intended for production use)
+21:21:10,627  INFO pooling:136 - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+21:21:10,627  INFO pooling:158 - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/agendadereuniao]
+21:21:10,627  INFO pooling:167 - HHH10001001: Connection properties: {password=****, user=raft}
+21:21:10,627  INFO pooling:171 - HHH10001003: Autocommit mode: false
+21:21:10,631  INFO pooling:372 - HHH10001115: Connection pool size: 20 (min=1)
+21:21:11,912  INFO JtaPlatformInitiator:59 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+21:21:11,940  INFO access:52 - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@3d3c886f] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+21:21:12,060 DEBUG Util:21 - -------- conectou banco
+21:21:12,320 DEBUG SQL:135 - select p1_0.id,p1_0.nome from Pessoa p1_0
+21:21:12,341 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
+21:21:12,343 TRACE bind:24 - binding parameter (1:INTEGER) <- [2]
+21:21:12,350 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
+21:21:12,351 TRACE bind:24 - binding parameter (1:INTEGER) <- [3]
+21:21:12,353 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
+21:21:12,353 TRACE bind:24 - binding parameter (1:INTEGER) <- [4]
+21:21:12,356 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
+21:21:12,356 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+21:21:12,358 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
+21:21:12,358 TRACE bind:24 - binding parameter (1:INTEGER) <- [5]
+21:21:12,361 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
+21:21:12,361 TRACE bind:24 - binding parameter (1:INTEGER) <- [6]
+21:21:12,365 DEBUG SQL:135 - select r1_0.id,r1_0.assunto,r1_0.data from Reuniao r1_0
+21:21:12,368 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
+21:21:12,369 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+21:21:12,370 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
+21:21:12,370 TRACE bind:24 - binding parameter (1:INTEGER) <- [2]
+21:21:12,373 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
+21:21:12,373 TRACE bind:24 - binding parameter (1:INTEGER) <- [3]
+21:21:12,375 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
+21:21:12,375 TRACE bind:24 - binding parameter (1:INTEGER) <- [4]
+21:21:12,379  INFO pooling:607 - HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/agendadereuniao]
+21:21:12,380 DEBUG Util:31 - -------- desconectou banco
