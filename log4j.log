@@ -1,32 +1,43 @@
-11:01:27,169  INFO Util:21 - ----conectar banco - lendo arquivo de propriedades 
-11:01:27,171  INFO Util:26 - sgbd => postgresql
-11:01:27,171  INFO Util:27 - banco => agendadereuniao
-11:01:27,173  INFO Util:28 - ip => localhost
-11:01:27,173  INFO Util:32 - ----configurando postgresql
-11:01:27,208 DEBUG logging:38 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
-11:01:27,327  INFO LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: hibernate-postgresql]
-11:01:27,375  INFO Version:44 - HHH000412: Hibernate ORM core version 6.5.2.Final
-11:01:27,411 DEBUG RegionFactoryInitiator:122 - Cannot default RegionFactory based on registered strategies as `[]` RegionFactory strategies were registered
-11:01:27,412  INFO RegionFactoryInitiator:50 - HHH000026: Second-level cache disabled
-11:01:27,640  WARN pooling:81 - HHH10001002: Using built-in connection pool (not intended for production use)
-11:01:27,645  INFO pooling:136 - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
-11:01:27,646  INFO pooling:158 - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/agendadereuniao]
-11:01:27,646  INFO pooling:167 - HHH10001001: Connection properties: {password=****, user=raft}
-11:01:27,646  INFO pooling:171 - HHH10001003: Autocommit mode: false
-11:01:27,648  INFO pooling:372 - HHH10001115: Connection pool size: 20 (min=1)
-11:01:28,942  INFO JtaPlatformInitiator:59 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-11:01:28,966  INFO access:52 - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@6da54910] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
-11:01:29,375 DEBUG SQL:135 - select r1_0.id,r1_0.assunto,r1_0.data from Reuniao r1_0 where r1_0.data=?
-11:01:29,376 TRACE bind:24 - binding parameter (1:VARCHAR) <- [01/10/2024]
-11:01:29,401 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
-11:01:29,402 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
-11:01:29,458 DEBUG SQL:135 - select p1_0.id,p1_0.nome from Pessoa p1_0 where (select count(1) from Reuniao_Pessoa r1_0 where p1_0.id=r1_0.pessoas_id)>?
-11:01:29,458 TRACE bind:24 - binding parameter (1:INTEGER) <- [2]
-11:01:29,462 DEBUG SQL:135 - select r1_0.pessoas_id,r1_1.id,r1_1.assunto,r1_1.data from Reuniao_Pessoa r1_0 join Reuniao r1_1 on r1_1.id=r1_0.reunioes_id where r1_0.pessoas_id=?
-11:01:29,463 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
-11:01:29,488 DEBUG SQL:135 - select r1_0.id,r1_0.assunto,r1_0.data from Reuniao r1_0 join Reuniao_Pessoa p1_0 on r1_0.id=p1_0.reunioes_id join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_1.nome=?
-11:01:29,489 TRACE bind:24 - binding parameter (1:VARCHAR) <- [Lavinia]
-11:01:29,491 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
-11:01:29,492 TRACE bind:24 - binding parameter (1:INTEGER) <- [3]
-11:01:29,493  INFO Util:61 - ----desconectar banco
-11:01:29,495  INFO pooling:607 - HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/agendadereuniao]
+19:39:51,941  INFO Util:21 - ----conectar banco - lendo arquivo de propriedades 
+19:39:51,945  INFO Util:26 - sgbd => postgresql
+19:39:51,945  INFO Util:27 - banco => agendadereuniao
+19:39:51,945  INFO Util:28 - ip => localhost
+19:39:51,945  INFO Util:32 - ----configurando postgresql
+19:39:51,975 DEBUG logging:38 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+19:39:52,091  INFO LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: hibernate-postgresql]
+19:39:52,140  INFO Version:44 - HHH000412: Hibernate ORM core version 6.5.2.Final
+19:39:52,180 DEBUG RegionFactoryInitiator:122 - Cannot default RegionFactory based on registered strategies as `[]` RegionFactory strategies were registered
+19:39:52,180  INFO RegionFactoryInitiator:50 - HHH000026: Second-level cache disabled
+19:39:52,436  WARN pooling:81 - HHH10001002: Using built-in connection pool (not intended for production use)
+19:39:52,441  INFO pooling:136 - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+19:39:52,441  INFO pooling:158 - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/agendadereuniao]
+19:39:52,442  INFO pooling:167 - HHH10001001: Connection properties: {password=****, user=raft}
+19:39:52,442  INFO pooling:171 - HHH10001003: Autocommit mode: false
+19:39:52,444  INFO pooling:372 - HHH10001115: Connection pool size: 20 (min=1)
+19:39:53,733  INFO JtaPlatformInitiator:59 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+19:39:53,760  INFO access:52 - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@318d56c7] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+19:39:54,226 DEBUG SQL:135 - select r1_0.id,r1_0.assunto,r1_0.data from Reuniao r1_0
+19:39:58,673 DEBUG SQL:135 - select r1_0.id,r1_0.assunto,r1_0.data from Reuniao r1_0 where r1_0.id=?
+19:39:58,675 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+19:39:58,684 DEBUG SQL:135 - select p1_0.reunioes_id,p1_1.id,p1_1.nome from Reuniao_Pessoa p1_0 join Pessoa p1_1 on p1_1.id=p1_0.pessoas_id where p1_0.reunioes_id=?
+19:39:58,685 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+19:40:12,966 DEBUG SQL:135 - select p1_0.id,p1_0.nome from Pessoa p1_0 where p1_0.nome=?
+19:40:12,966 TRACE bind:24 - binding parameter (1:VARCHAR) <- [teste]
+19:40:12,971 DEBUG SQL:135 - select p1_0.id,p1_0.nome from Pessoa p1_0 where p1_0.nome=?
+19:40:12,971 TRACE bind:24 - binding parameter (1:VARCHAR) <- [teste]
+19:40:12,982 DEBUG SQL:135 - insert into Pessoa (nome) values (?) returning id
+19:40:12,984 TRACE bind:24 - binding parameter (1:VARCHAR) <- [teste]
+19:40:15,840 DEBUG SQL:135 - select r1_0.id,r1_0.assunto,r1_0.data from Reuniao r1_0 where r1_0.id=?
+19:40:15,840 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+19:40:15,842 DEBUG SQL:135 - select p1_0.id,p1_0.nome from Pessoa p1_0 where p1_0.nome=?
+19:40:15,842 TRACE bind:24 - binding parameter (1:VARCHAR) <- [teste]
+19:40:15,845 DEBUG SQL:135 - delete from Reuniao_Pessoa where reunioes_id=?
+19:40:15,845 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+19:40:15,848 DEBUG SQL:135 - insert into Reuniao_Pessoa (reunioes_id,pessoas_id) values (?,?)
+19:40:15,849 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+19:40:15,849 TRACE bind:24 - binding parameter (2:INTEGER) <- [1]
+19:40:15,850 DEBUG SQL:135 - insert into Reuniao_Pessoa (reunioes_id,pessoas_id) values (?,?)
+19:40:15,850 TRACE bind:24 - binding parameter (1:INTEGER) <- [1]
+19:40:15,850 TRACE bind:24 - binding parameter (2:INTEGER) <- [2]
+19:40:18,352  INFO Util:61 - ----desconectar banco
+19:40:18,354  INFO pooling:607 - HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/agendadereuniao]

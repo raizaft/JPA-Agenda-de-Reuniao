@@ -120,6 +120,27 @@ public class Fachada {
             throw e;
         }
     }
+    
+    public static void removerPessoaReuniao(String nome, int id) throws Exception {
+    	DAO.begin();
+    	try {
+    		Reuniao r = buscarReuniao(id);
+        	Pessoa p = buscarPessoa(nome);
+        	if (p == null) {
+        		DAO.rollback();
+        		throw new Exception("Pessoa não encontrada.");
+            }
+        	r.removerPessoa(p);
+        	p.remover(r);
+        	daopessoa.update(p);
+        	daoreuniao.update(r);
+            DAO.commit();
+    	} catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    
 
     public static void alterarAssuntoReuniao(int id, String novoAssunto) throws Exception {
         DAO.begin();
@@ -170,7 +191,7 @@ public class Fachada {
                 daopessoa.update(pessoa);
             }
 
-            daoreuniao.update(reuniao);
+            daoreuniao.delete(reuniao);
             DAO.commit();
 
         } catch (Exception e) {
@@ -192,7 +213,7 @@ public class Fachada {
                 throw new Exception("Não é possível deletar a pessoa, pois ela está participando de uma ou mais reuniões.");
             }
 
-            daopessoa.update(pessoa);
+            daopessoa.delete(pessoa);
             DAO.commit();
         } catch (Exception e) {
             throw e;

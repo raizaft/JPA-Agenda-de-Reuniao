@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class TelaReuniao extends JFrame {
+public class TelaReuniao2 extends JFrame {
     private Reuniao reuniao;
     private JLabel lblId;
     private JLabel lblData;
@@ -31,9 +31,8 @@ public class TelaReuniao extends JFrame {
     private JButton button_2;
     private JTextField textField;
     private TelaPrincipal telaPrincipal;
-    private JButton button_1;
 
-    public TelaReuniao(Reuniao reuniao, TelaPrincipal telaPrincipal) {
+    public TelaReuniao2(Reuniao reuniao, TelaPrincipal telaPrincipal) {
         this.reuniao = reuniao;
         this.telaPrincipal = telaPrincipal;
         initialize();
@@ -41,7 +40,7 @@ public class TelaReuniao extends JFrame {
 
     private void initialize() {
         setTitle("Detalhes da Reunião");
-        setBounds(100, 100, 297, 448);
+        setBounds(100, 100, 297, 413);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(null);
 
@@ -73,18 +72,14 @@ public class TelaReuniao extends JFrame {
         button.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String nome = textField.getText();
-        		if (nome != null && !nome.trim().isEmpty()) {
-	        		try {
-						Fachada.addPessoaReuniao(nome, reuniao);
-					} catch (Exception ex) {
-						Component frame = null;
-						JOptionPane.showMessageDialog(frame, "Erro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-					}
-        		} else {
-        	            JOptionPane.showMessageDialog(null, "O nome não pode ser vazio ou apenas espaços!", "Aviso", JOptionPane.WARNING_MESSAGE);
-        	        }
-	        		listagemPessoas();
-	        		textField.setText("");
+        		try {
+					Fachada.addPessoaReuniao(nome, reuniao);
+				} catch (Exception ex) {
+					Component frame = null;
+					JOptionPane.showMessageDialog(frame, "Erro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+        		listagemPessoas();
+        		textField.setText("");
         	}
         });
         button.setBounds(10, 342, 260, 23);
@@ -112,23 +107,6 @@ public class TelaReuniao extends JFrame {
         textField.setBounds(10, 311, 260, 20);
         getContentPane().add(textField);
         textField.setColumns(10);
-        
-        button_1 = new JButton("Remover Participante");
-        button_1.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		String nome = JOptionPane.showInputDialog(null, "Nome:", "Entrada de Dados", JOptionPane.QUESTION_MESSAGE);
-       		 if (nome != null && !nome.trim().isEmpty()) {
-       	            try {
-       	                Fachada.removerPessoaReuniao(nome, reuniao.getId());
-       	                listagemPessoas();
-       	            } catch (Exception ex) {
-       	                JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-       	            }
-       	        }
-        	}
-        });
-        button_1.setBounds(10, 376, 260, 23);
-        getContentPane().add(button_1);
     }
     
     public void listagemPessoas() {
