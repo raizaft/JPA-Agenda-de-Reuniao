@@ -10,7 +10,6 @@ public class Cadastrar {
 		try {
 			System.out.println("cadastrando pessoas...");
 			Fachada.inicializar();
-			
 			Fachada.criarPessoa("Raiza");
 			Fachada.criarPessoa("Lavinia");
 			Fachada.criarPessoa("Lucas");

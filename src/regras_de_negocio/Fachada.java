@@ -14,40 +14,41 @@ import daojpa.DAOReuniao;
 
 
 public class Fachada {
-	private Fachada() {}
-
-	private static DAOPessoa daopessoa = new DAOPessoa();
-	private static DAOReuniao daoreuniao = new DAOReuniao();
-
-	public static void inicializar() {
-		DAO.open();
-	}
-
-	public static void finalizar() {
-		DAO.close();
-	}
-    
-    public static Pessoa buscarPessoa(String nome) {
-    	Pessoa p = daopessoa.read(nome);
-		return p;
+    private Fachada() {
     }
-    
-    public static Reuniao buscarReuniao(int id) {
-    	Reuniao r = daoreuniao.read(id);
-		return r;
-    }    
 
-    public static Pessoa criarPessoa(String nome)throws Exception {
-    	DAO.begin();
-        
+    private static DAOPessoa daopessoa = new DAOPessoa();
+    private static DAOReuniao daoreuniao = new DAOReuniao();
+
+    public static void inicializar() {
+        DAO.open();
+    }
+
+    public static void finalizar() {
+        DAO.close();
+    }
+
+    public static Pessoa buscarPessoa(String nome) {
+        Pessoa p = daopessoa.read(nome);
+        return p;
+    }
+
+    public static Reuniao buscarReuniao(int id) {
+        Reuniao r = daoreuniao.read(id);
+        return r;
+    }
+
+    public static Pessoa criarPessoa(String nome) throws Exception {
+        DAO.begin();
+
         try {
-        	if (buscarPessoa(nome) != null) {
-        		DAO.rollback();
+            if (buscarPessoa(nome) != null) {
+                DAO.rollback();
                 throw new Exception("Pessoa já cadastrada!");
-        	}
+            }
             Pessoa pessoa = new Pessoa(nome);
             daopessoa.create(pessoa);
-    		DAO.commit();
+            DAO.commit();
             return pessoa;
         } catch (Exception e) {
             throw e;
@@ -55,18 +56,18 @@ public class Fachada {
     }
 
     public static Reuniao criarReuniao(String data, String assunto, ArrayList<String> nomesPessoas) throws Exception {
-    	DAO.begin();
+        DAO.begin();
 
         try {
             LocalDate dt = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             LocalDate hoje = LocalDate.now();
             if (dt.isBefore(hoje)) {
-            	DAO.rollback();
+                DAO.rollback();
                 throw new Exception("A data não pode ser anterior a de hoje.");
             }
 
             if (nomesPessoas.size() < 2) {
-            	DAO.rollback();
+                DAO.rollback();
                 throw new Exception("Uma reunião deve ter no mínimo 2 pessoas.");
             }
 
@@ -81,14 +82,14 @@ public class Fachada {
 
                 for (Reuniao r : p.getReuniao()) {
                     if (r.getData().equals(data)) {
-                    	DAO.rollback();
+                        DAO.rollback();
                         throw new Exception("A pessoa " + p.getNome() + " já está participando de outra reunião ao mesmo tempo.");
                     }
                 }
                 reuniao.addPessoa(p);
             }
             daoreuniao.create(reuniao);
-            
+
             for (Pessoa pessoa : reuniao.getPessoas()) {
                 pessoa.adicionar(reuniao);
                 daopessoa.update(pessoa);
@@ -101,30 +102,30 @@ public class Fachada {
             throw e;
         }
     }
-    
+
     public static void addPessoaReuniao(String nome, Reuniao reuniao) throws Exception {
-    	DAO.begin();
-        
+        DAO.begin();
+
         try {
-        	Pessoa p = buscarPessoa(nome);
-        	if(p ==null) {
-        		p = criarPessoa(nome);
-        	}
-        	reuniao.addPessoa(p);
-        	daoreuniao.update(reuniao);
-    		p.adicionar(reuniao);
-    		daopessoa.update(p);
-    		DAO.commit();
+            Pessoa p = buscarPessoa(nome);
+            if (p == null) {
+                p = criarPessoa(nome);
+            }
+            reuniao.addPessoa(p);
+            daoreuniao.update(reuniao);
+            p.adicionar(reuniao);
+            daopessoa.update(p);
+            DAO.commit();
         } catch (Exception e) {
             throw e;
         }
     }
 
     public static void alterarAssuntoReuniao(int id, String novoAssunto) throws Exception {
-    	DAO.begin();
-    	
+        DAO.begin();
+
         try {
-        	Reuniao reuniao = buscarReuniao(id);
+            Reuniao reuniao = buscarReuniao(id);
             if (reuniao == null) {
                 throw new Exception("Reunião não encontrada.");
             }
@@ -138,12 +139,12 @@ public class Fachada {
     }
 
     public static void alterarNomePessoa(String nome, String novoNome) throws Exception {
-    	DAO.begin();
-        
+        DAO.begin();
+
         try {
-        	Pessoa pessoa = buscarPessoa(nome);
+            Pessoa pessoa = buscarPessoa(nome);
             if (pessoa == null) {
-            	DAO.rollback();
+                DAO.rollback();
                 throw new Exception("Pessoa não encontrada");
             }
             pessoa.setNome(novoNome);
@@ -154,13 +155,14 @@ public class Fachada {
         }
 
     }
+
     public static void deletarReuniao(int id) throws Exception {
-    	DAO.begin();
+        DAO.begin();
 
         try {
-        	Reuniao reuniao = buscarReuniao(id);
+            Reuniao reuniao = buscarReuniao(id);
             if (reuniao == null) {
-            	DAO.rollback();
+                DAO.rollback();
                 throw new Exception("Reunião não encontrada.");
             }
             for (Pessoa pessoa : reuniao.getPessoas()) {
@@ -175,18 +177,18 @@ public class Fachada {
             throw e;
         }
     }
-    
+
     public static void deletarPessoa(String nome) throws Exception {
-    	DAO.begin();
-        
+        DAO.begin();
+
         try {
             Pessoa pessoa = buscarPessoa(nome);
-            if (pessoa == null ) {
-            	DAO.rollback();
+            if (pessoa == null) {
+                DAO.rollback();
                 throw new Exception("Pessoa não encontrada");
             }
             if (!pessoa.getReuniao().isEmpty()) {
-            	DAO.rollback();
+                DAO.rollback();
                 throw new Exception("Não é possível deletar a pessoa, pois ela está participando de uma ou mais reuniões.");
             }
 
@@ -198,28 +200,28 @@ public class Fachada {
 
     }
 
-        public static List<Pessoa> listarPessoas () {
-        	return daopessoa.readAll();
-        }
-      
-
-        public static List<Reuniao> listarReunioes () {
-        	return daoreuniao.readAll();
-        }
-
-        public static List<Reuniao> consultarReunioes (String d){
-    		List<Reuniao> result = daoreuniao.readByDate(d);
-    		return result;
-        }
-        
-        public static List<Reuniao> reunioesComPessoa (String nome){
-    		List<Reuniao> result = daoreuniao.readByName(nome);
-    		return result;
-        }
-        
-        public static List<Pessoa> pessoasComMaisDeNReunioes (int n){
-    		List<Pessoa> result = daopessoa.readByNReunioes(n);
-    		return result;
-        }
+    public static List<Pessoa> listarPessoas() {
+        return daopessoa.readAll();
     }
+
+
+    public static List<Reuniao> listarReunioes() {
+        return daoreuniao.readAll();
+    }
+
+    public static List<Reuniao> consultarReunioes (String d){
+        List<Reuniao> result = daoreuniao.readByDate(d);
+        return result;
+    }
+
+    public static List<Reuniao> reunioesComPessoa(String nome) {
+        List<Reuniao> result = daoreuniao.readByName(nome);
+        return result;
+    }
+
+    public static List<Pessoa> pessoasComMaisDeNReunioes(int n) {
+        List<Pessoa> result = daopessoa.readByNReunioes(n);
+        return result;
+    }
+}
 

@@ -36,7 +36,7 @@ public class DAOReuniao extends DAO<Reuniao> {
         return q.getResultList();
 	}
 	
-	public List<Reuniao> readByDate(String d){
+	public List<Reuniao> readByDate(String  d){
 	    TypedQuery<Reuniao> q = manager.createQuery("SELECT r FROM Reuniao r WHERE r.data = :data", Reuniao.class);
 	    q.setParameter("data", d);
         return q.getResultList();

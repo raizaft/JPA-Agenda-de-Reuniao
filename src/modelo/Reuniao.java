@@ -1,79 +1,83 @@
 package modelo;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
-@Entity 
+@Entity
 public class Reuniao {
-	@Id		
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	private String data;
-	private String assunto;
-	
-	@ManyToMany
-	private List<Pessoa> pessoas = new ArrayList<>();
-	
-	public Reuniao() {}
-	public Reuniao(String data, String assunto) {
-		this.data = data;
-		this.assunto = assunto;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Convert(converter = LocalDateConverter.class)
+    private String data;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    private String assunto;
 
-	public String getData() {
-		return data;
-	}
+    @ManyToMany()
+    private List<Pessoa> pessoas = new ArrayList<>();
 
-	public void setData(String data) {
-		this.data = data;
-	}
+    public Reuniao() {
+    }
 
-	public String getAssunto() {
-		return assunto;
-	}
+    public Reuniao(String data, String assunto) {
+        this.data = data;
+        this.assunto = assunto;
+    }
 
-	public void setAssunto(String assunto) {
-		this.assunto = assunto;
-	}
-	
-	//relacionamento
 
-	public List<Pessoa> getPessoas(){
-		return pessoas;
-	}
-	
-	public void addPessoa(Pessoa p) {
-		pessoas.add(p);
-	}
-	
-	public void removerPessoa(Pessoa p) {
-		pessoas.remove(p);
-	}
-	
-	public ArrayList<String> getNomesPessoas() {
-		ArrayList<String> nomespessoas = new ArrayList<>();
-		for (Pessoa p : pessoas)
-			nomespessoas.add(p.getNome());
-		return nomespessoas;
-	}
+    public int getId() {
+        return id;
+    }
 
-	@Override
-	public String toString() {
-		return "Reuniao [id=" + id + ", data=" + data + ", assunto=" + assunto + ", pessoas=" + getNomesPessoas() + "]";
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getAssunto() {
+        return assunto;
+    }
+
+    public void setAssunto(String assunto) {
+        this.assunto = assunto;
+    }
+
+    //relacionamento
+
+    public List<Pessoa> getPessoas() {
+        return pessoas;
+    }
+
+    public void addPessoa(Pessoa p) {
+        pessoas.add(p);
+    }
+
+    public void removerPessoa(Pessoa p) {
+        pessoas.remove(p);
+    }
+
+    public ArrayList<String> getNomesPessoas() {
+        ArrayList<String> nomespessoas = new ArrayList<>();
+        for (Pessoa p : pessoas)
+            nomespessoas.add(p.getNome());
+        return nomespessoas;
+    }
+
+    @Override
+    public String toString() {
+        return "Reuniao [id=" + id + ", data=" + data + ", assunto=" + assunto + ", pessoas=" + getNomesPessoas() + "]";
+    }
 
 }
