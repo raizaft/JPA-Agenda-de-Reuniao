@@ -108,39 +108,51 @@ public class Fachada {
 
         try {
             Pessoa p = buscarPessoa(nome);
+
             if (p == null) {
                 p = criarPessoa(nome);
+            } else {
+                if (reuniao.getPessoas().stream().anyMatch(participante -> participante.getNome().equals(nome))) {
+                    throw new Exception("A pessoa " + nome + " já está participando desta reunião.");
+                }
+                for (Reuniao outraReuniao : p.getReuniao()) {
+                    if (outraReuniao.getData().equals(reuniao.getData())) {
+                        throw new Exception("A pessoa " + nome + " já está participando de outra reunião na mesma data.");
+                    }
+                }
             }
+
             reuniao.addPessoa(p);
             daoreuniao.update(reuniao);
             p.adicionar(reuniao);
             daopessoa.update(p);
+
+            DAO.commit();
+        } catch (Exception e) {
+            DAO.rollback();
+            throw e;
+        }
+    }
+
+    public static void removerPessoaReuniao(String nome, int id) throws Exception {
+        DAO.begin();
+        try {
+            Reuniao r = buscarReuniao(id);
+            Pessoa p = buscarPessoa(nome);
+            if (p == null) {
+                DAO.rollback();
+                throw new Exception("Pessoa não encontrada.");
+            }
+            r.removerPessoa(p);
+            p.remover(r);
+            daopessoa.update(p);
+            daoreuniao.update(r);
             DAO.commit();
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    public static void removerPessoaReuniao(String nome, int id) throws Exception {
-    	DAO.begin();
-    	try {
-    		Reuniao r = buscarReuniao(id);
-        	Pessoa p = buscarPessoa(nome);
-        	if (p == null) {
-        		DAO.rollback();
-        		throw new Exception("Pessoa não encontrada.");
-            }
-        	r.removerPessoa(p);
-        	p.remover(r);
-        	daopessoa.update(p);
-        	daoreuniao.update(r);
-            DAO.commit();
-    	} catch (Exception e) {
-            throw e;
-        }
-    }
-    
-    
+
 
     public static void alterarAssuntoReuniao(int id, String novoAssunto) throws Exception {
         DAO.begin();
@@ -230,7 +242,7 @@ public class Fachada {
         return daoreuniao.readAll();
     }
 
-    public static List<Reuniao> consultarReunioes (String d){
+    public static List<Reuniao> consultarReunioes(String d) {
         List<Reuniao> result = daoreuniao.readByDate(d);
         return result;
     }

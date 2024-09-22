@@ -7,15 +7,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Reuniao;
-import modelo.Pessoa;
 import regras_de_negocio.Fachada;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -128,9 +125,7 @@ public class TelaPrincipal {
 					nomesPessoas.clear();
 				} catch (Exception ex) {
                 	label.setText("Erro: " + ex.getMessage());
-                }finally {
-		            button_3.doClick();
-		        }
+                }
 			}
 		});
 		button.setBounds(295, 211, 182, 23);

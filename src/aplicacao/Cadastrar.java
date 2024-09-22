@@ -8,8 +8,8 @@ import regras_de_negocio.Fachada;
 public class Cadastrar {
 	public Cadastrar(){
 		try {
-			System.out.println("cadastrando pessoas...");
 			Fachada.inicializar();
+			System.out.println("cadastrando pessoas...");
 			Fachada.criarPessoa("Raiza");
 			Fachada.criarPessoa("Lavinia");
 			Fachada.criarPessoa("Lucas");

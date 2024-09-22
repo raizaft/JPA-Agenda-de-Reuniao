@@ -8,13 +8,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Pessoa;
-import modelo.Reuniao;
 import regras_de_negocio.Fachada;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 
@@ -76,7 +74,7 @@ public class TelaPessoa {
 						label.setText(e1.getMessage());
 					}
 				} else {
-					label.setText("Selecione uma reunião para ver.");
+					label.setText("Selecione uma pessoa para excluir.");
 				}
         	}
         });
