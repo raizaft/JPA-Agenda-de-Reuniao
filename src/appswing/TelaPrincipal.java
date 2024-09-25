@@ -192,7 +192,9 @@ public class TelaPrincipal {
 		        try {
 		            if (!nomesPessoas.contains(nomePessoa)) {
 		                try {
-		                    Fachada.criarPessoa(nomePessoa);
+		                	if (Fachada.buscarPessoa(nomePessoa)==null) {
+			                    Fachada.criarPessoa(nomePessoa);
+		                	}
 		                    textArea.append(nomePessoa + "\n");
 		                    nomesPessoas.add(nomePessoa);
 		                } catch (Exception ex) {
